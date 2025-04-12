@@ -4,7 +4,7 @@
   "description": "A trading charts library",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --watch",
+    "build": "tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
     "test": "jest"
   },
   "keywords": [
