@@ -1,0 +1,21 @@
+{
+  "name": "marketlens",
+  "version": "1.0.0",
+  "description": "A trading charts library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "marketlens",
+    "trading",
+    "charts",
+    "chart",
+    "library"
+  ],
+  "author": "Damian Kowalski",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
