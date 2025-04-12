@@ -18,8 +18,8 @@ export class View {
     return assertDefined(ctx);
   }
 
-  get rescaler(): ViewRescaler {
-    return this._rescaler;
+  public destroy(): void {
+    this._rescaler.destroy();
   }
 
   private _createCanvas(): HTMLCanvasElement {
