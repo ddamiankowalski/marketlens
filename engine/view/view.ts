@@ -23,8 +23,22 @@ export class View {
     return assertDefined(ctx);
   }
 
+  /**
+   * Height of the view in CSS pixels.
+   */
+  get height(): number {
+    return parseFloat(this._canvas.style.height);
+  }
+
+  /**
+   * Width of the view in CSS pixels.
+   */
+  get width(): number {
+    return parseFloat(this._canvas.style.width);
+  }
+
   public setRenderer(type: IRendererType): void {
-    this._renderer = new TestRenderer();
+    this._renderer = new TestRenderer(this);
   }
 
   /**

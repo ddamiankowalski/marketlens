@@ -1,3 +1,5 @@
+import { ViewController } from './view-controller';
+
 export class ViewRescaler {
   private _observer: ResizeObserver;
 
@@ -41,6 +43,8 @@ export class ViewRescaler {
       canvas.style.position = 'absolute';
       canvas.style.top = '0px';
       canvas.style.left = '0px';
+
+      ViewController.forceRender();
     });
 
     observer.observe(this._hostElement);

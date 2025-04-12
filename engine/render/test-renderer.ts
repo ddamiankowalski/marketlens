@@ -1,7 +1,10 @@
 import { Renderer } from './renderer';
 
-export class TestRenderer implements Renderer {
+export class TestRenderer extends Renderer {
   public render(): void {
-    console.log('i am rendering!!');
+    super.render();
+
+    this.context.fillStyle = 'red';
+    this.context.fillRect(0, 0, 50, 50);
   }
 }

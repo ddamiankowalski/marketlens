@@ -5,6 +5,11 @@ export class ViewController {
     this._runFrames();
   }
 
+  public static forceRender(): void {
+    const views = ViewFactory.allViews();
+    views.forEach((view) => view.render());
+  }
+
   private _runFrames(): void {
     let lastFrameTime: DOMHighResTimeStamp | null = null;
 
@@ -15,14 +20,17 @@ export class ViewController {
     const _raf = (currentFrameTime: DOMHighResTimeStamp): void => {
       if (!lastFrameTime || currentFrameTime - lastFrameTime > 30) {
         lastFrameTime = currentFrameTime;
-
-        const views = ViewFactory.allViews();
-        views.forEach((view) => view.render());
+        this._renderAll();
       }
 
       requestAnimationFrame(_raf);
     };
 
     requestAnimationFrame(_raf);
+  }
+
+  private _renderAll(): void {
+    const views = ViewFactory.allViews();
+    views.forEach((view) => view.render());
   }
 }
