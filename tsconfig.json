@@ -9,10 +9,6 @@
     "sourceMap": true,
     "rootDir": "./",                                
     "baseUrl": "./",
-    "paths": {
-      "@market-lens/engine/*": ["engine/*"],
-      "@market-lens/utils/*": ["utils/*"],
-    },
     "outDir": "./.build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
