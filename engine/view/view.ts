@@ -1,15 +1,15 @@
 import { Renderer } from 'engine/render/renderer';
 import { assertDefined } from '../utils/assert';
 import { ViewRescaler } from './view-rescaler';
+import { IRendererType } from 'engine/render/types/irenderer';
 
 export class View {
   private _canvas: HTMLCanvasElement;
   private _rescaler: ViewRescaler;
 
-  constructor(
-    private _hostElement: HTMLElement,
-    private _renderer: Renderer,
-  ) {
+  private _renderer: Renderer | null = null;
+
+  constructor(private _hostElement: HTMLElement) {
     this._canvas = this._createCanvas();
     this._rescaler = new ViewRescaler(_hostElement, this._canvas, this.context);
   }
@@ -22,11 +22,15 @@ export class View {
     return assertDefined(ctx);
   }
 
+  public setRenderer(type: IRendererType): void {}
+
   /**
    * Renders the current view using the provided renderer.
    */
   public render(): void {
-    this._renderer.render();
+    if (this._renderer) {
+      this._renderer.render();
+    }
   }
 
   public destroy(): void {

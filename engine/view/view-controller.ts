@@ -1,3 +1,5 @@
+import { ViewFactory } from './view-factory';
+
 export class ViewController {
   constructor() {
     this._runFrames();
@@ -12,10 +14,11 @@ export class ViewController {
      */
     const _raf = (currentFrameTime: DOMHighResTimeStamp): void => {
       if (!lastFrameTime || currentFrameTime - lastFrameTime > 30) {
-        requestAnimationFrame(_raf);
-
-        console.log('teraz render');
+        const views = ViewFactory.allViews();
+        views.forEach((view) => view.render());
       }
+
+      requestAnimationFrame(_raf);
     };
 
     requestAnimationFrame(_raf);
