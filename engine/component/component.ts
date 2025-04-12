@@ -7,12 +7,19 @@ export class Component {
 
   constructor(
     private _hostElement: HTMLElement,
-    private _styles: IComponentStyle = {
+    private _style: IComponentStyle = {
       width: '100%',
       height: '100%',
     },
   ) {
     this._element = this._createElement();
+  }
+
+  /**
+   * Component html element.
+   */
+  get element(): HTMLElement {
+    return this._element;
   }
 
   /**
@@ -40,11 +47,11 @@ export class Component {
   }
 
   private _addStyles(element: HTMLElement) {
-    if (!this._styles) {
+    if (!this._style) {
       return;
     }
 
-    Object.entries(this._styles).forEach(([declaration, value]) => {
+    Object.entries(this._style).forEach(([declaration, value]) => {
       if (declaration && value) {
         (element.style as any)[declaration] = value;
       }
