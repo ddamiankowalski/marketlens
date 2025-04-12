@@ -4,6 +4,7 @@ import { ViewRescaler } from './view-rescaler';
 import { IRendererType } from 'engine/render/types/irenderer';
 import { TestRenderer } from 'engine/render/test-renderer';
 import { GridRenderer } from 'engine/render/grid-renderer';
+import { IModel } from 'engine/model/types/imodel';
 
 export class View {
   private _canvas: HTMLCanvasElement;
@@ -11,9 +12,19 @@ export class View {
 
   private _renderer: Renderer | null = null;
 
-  constructor(private _hostElement: HTMLElement) {
+  constructor(
+    private _hostElement: HTMLElement,
+    private _model: IModel = {},
+  ) {
     this._canvas = this._createCanvas();
     this._rescaler = new ViewRescaler(_hostElement, this._canvas, this.context);
+  }
+
+  /**
+   * Returns the chart model.
+   */
+  get model(): IModel {
+    return this._model;
   }
 
   /**

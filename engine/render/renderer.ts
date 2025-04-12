@@ -2,13 +2,10 @@ import { IModel } from 'engine/model/types/imodel';
 import { View } from 'engine/view/view';
 
 export abstract class Renderer {
-  constructor(
-    private _view: View,
-    private _model?: IModel,
-  ) {}
+  constructor(private _view: View) {}
 
   get model(): IModel | null {
-    return this._model || null;
+    return this._view.model;
   }
 
   get view(): View {

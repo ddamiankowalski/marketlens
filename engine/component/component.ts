@@ -7,7 +7,7 @@ import { IModel } from 'engine/model/types/imodel';
 export class Component {
   protected _element: HTMLElement;
   protected _viewFactory = new ViewFactory();
-  protected _model: IModel | null = null;
+  protected _model: IModel = {};
 
   constructor(
     private _hostElement: HTMLElement,
@@ -30,9 +30,15 @@ export class Component {
    * Creates a view inside the component.
    */
   public createView(): void {
-    this._viewFactory.createView(this._element);
+    this._viewFactory.createView(this._element, this._model);
   }
 
+  /**
+   * Retrieves the view by a given id.
+   *
+   * @param id
+   * @returns
+   */
   public getView(id: ViewId): View {
     return this._viewFactory.getView(id);
   }

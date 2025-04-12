@@ -4,6 +4,6 @@ export class GridRenderer extends Renderer {
   public render(): void {
     super.clear();
 
-    console.log(this);
+    console.log(this.model);
   }
 }

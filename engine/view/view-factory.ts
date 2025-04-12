@@ -1,6 +1,7 @@
 import { assertDefined } from 'engine/utils';
 import { ViewId } from './types/iview';
 import { View } from './view';
+import { IModel } from 'engine/model/types/imodel';
 
 export class ViewFactory {
   private static _allViews = new Set<View>();
@@ -26,9 +27,10 @@ export class ViewFactory {
    * registry.
    *
    * @param hostElement
+   * @param model
    */
-  public createView(hostElement: HTMLElement): void {
-    const view = new View(hostElement);
+  public createView(hostElement: HTMLElement, model: IModel = {}): void {
+    const view = new View(hostElement, model);
 
     ViewFactory._allViews.add(view);
     this._componentViews.set('', view);
