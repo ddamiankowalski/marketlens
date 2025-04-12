@@ -4,7 +4,7 @@ export class GridRenderer extends Renderer {
   public render(): void {
     super.clear();
 
-    if (!this.timeScaleModel) {
+    if (!this.timeScaleModel || !this.priceScaleModel) {
       return;
     }
 
@@ -18,6 +18,17 @@ export class GridRenderer extends Renderer {
       this.context.stroke();
 
       currentXCoord += this.timeScaleModel.colDist;
+    }
+
+    let currentYCoord = 0;
+
+    while (currentYCoord < this.view.width) {
+      this.context.beginPath();
+      this.context.moveTo(0, currentYCoord);
+      this.context.lineTo(this.view.width, currentYCoord);
+      this.context.stroke();
+
+      currentYCoord += this.priceScaleModel.rowDist;
     }
   }
 }

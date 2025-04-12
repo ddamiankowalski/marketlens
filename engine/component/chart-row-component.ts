@@ -8,7 +8,9 @@ import { TimeScaleModel } from 'engine/model/timescale-model';
 export class ChartRowComponent extends Component {
   private _priceScaleModel = new PriceScaleModel();
 
-  private _chartDataComponent = new ChartDataComponent(this._timeScaleModel, this.element, { flexBasis: '100%' });
+  private _chartDataComponent = new ChartDataComponent(this._timeScaleModel, this._priceScaleModel, this.element, {
+    flexBasis: '100%',
+  });
   private _priceAxisComponent = new PriceAxisComponent(this.element, { flexBasis: '3rem', flexShrink: '0' });
 
   constructor(
