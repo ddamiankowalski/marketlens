@@ -1,8 +1,8 @@
 import { Component } from './component';
-import { DataComponent } from './data-component';
+import { ChartDataComponent } from './chart-data-component';
 import { PriceAxisComponent } from './price-axis-component';
 
 export class ChartRowComponent extends Component {
-  private _dataComponent = new DataComponent(this.element, { flexBasis: '100%' });
+  private _dataComponent = new ChartDataComponent(this.element, { flexBasis: '100%' });
   private _priceAxisComponent = new PriceAxisComponent(this.element, { flexBasis: '3rem', flexShrink: '0' });
 }
