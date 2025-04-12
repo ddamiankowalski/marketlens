@@ -8,8 +8,11 @@ import { PriceScaleModel } from 'engine/model/pricescale-model';
 export class ChartComponent extends Component {
   private _viewController = new ViewController();
   private _timeScaleModel = new TimeScaleModel();
-  private _priceScaleModel = new PriceScaleModel();
 
-  private _chartRowComponent = new ChartRowComponent(this.element, { flexBasis: '100%', display: 'flex' });
+  private _chartRowComponent = new ChartRowComponent(this._timeScaleModel, this.element, {
+    flexBasis: '100%',
+    display: 'flex',
+  });
+
   private _timeAxisComponent = new TimeAxisComponent(this.element, { flexBasis: '3rem', flexShrink: '0' });
 }

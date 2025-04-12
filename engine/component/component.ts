@@ -4,8 +4,8 @@ import { View } from 'engine/view/view';
 import { ViewId } from 'engine/view/types/iview';
 
 export class Component {
-  private _element: HTMLElement;
-  private _viewFactory = new ViewFactory();
+  protected _element: HTMLElement;
+  protected _viewFactory = new ViewFactory();
 
   constructor(
     private _hostElement: HTMLElement,
