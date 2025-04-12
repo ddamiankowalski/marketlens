@@ -1,4 +1,4 @@
-import { assertDefined } from '../utils';
+import { assertDefined } from '../utils/assert';
 import { ViewRescaler } from './view-rescaler';
 
 export class View {
