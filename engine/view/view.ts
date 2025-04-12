@@ -2,6 +2,7 @@ import { Renderer } from 'engine/render/renderer';
 import { assertDefined } from '../utils/assert';
 import { ViewRescaler } from './view-rescaler';
 import { IRendererType } from 'engine/render/types/irenderer';
+import { TestRenderer } from 'engine/render/test-renderer';
 
 export class View {
   private _canvas: HTMLCanvasElement;
@@ -22,7 +23,9 @@ export class View {
     return assertDefined(ctx);
   }
 
-  public setRenderer(type: IRendererType): void {}
+  public setRenderer(type: IRendererType): void {
+    this._renderer = new TestRenderer();
+  }
 
   /**
    * Renders the current view using the provided renderer.

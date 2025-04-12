@@ -14,6 +14,8 @@ export class ViewController {
      */
     const _raf = (currentFrameTime: DOMHighResTimeStamp): void => {
       if (!lastFrameTime || currentFrameTime - lastFrameTime > 30) {
+        lastFrameTime = currentFrameTime;
+
         const views = ViewFactory.allViews();
         views.forEach((view) => view.render());
       }

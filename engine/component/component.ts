@@ -1,5 +1,7 @@
 import { ViewFactory } from 'engine/view/view-factory';
 import { IComponentStyle } from './types/icomponent';
+import { View } from 'engine/view/view';
+import { ViewId } from 'engine/view/types/iview';
 
 export class Component {
   private _element: HTMLElement;
@@ -27,6 +29,10 @@ export class Component {
    */
   public createView(): void {
     this._viewFactory.createView(this._element);
+  }
+
+  public getView(id: ViewId): View {
+    return this._viewFactory.getView(id);
   }
 
   /**

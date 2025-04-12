@@ -1,3 +1,5 @@
+import { assertDefined } from 'engine/utils';
+import { ViewId } from './types/iview';
 import { View } from './view';
 
 export class ViewFactory {
@@ -12,7 +14,7 @@ export class ViewFactory {
     return [...this._allViews.values()];
   }
 
-  private _componentViews = new Set<View>();
+  private _componentViews = new Map<string, View>();
 
   private get _views(): View[] {
     return [...this._componentViews.values()];
@@ -29,7 +31,16 @@ export class ViewFactory {
     const view = new View(hostElement);
 
     ViewFactory._allViews.add(view);
-    this._componentViews.add(view);
+    this._componentViews.set('', view);
+  }
+
+  /**
+   * Returns a view for a given component.
+   *
+   * @param id
+   */
+  public getView(id: ViewId): View {
+    return assertDefined(this._componentViews.get(id), 'The view is destroyed or not-existing');
   }
 
   /**
