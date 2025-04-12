@@ -5,3 +5,7 @@ export type IModel = {
   timeScaleModel?: TimeScaleModel;
   priceScaleModel?: PriceScaleModel;
 };
+
+export type IPriceScaleMetadata = {
+  pipSize: number;
+};
