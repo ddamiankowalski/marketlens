@@ -33,6 +33,9 @@ export class View {
     }
   }
 
+  /**
+   * Destroys a given view.
+   */
   public destroy(): void {
     this._rescaler.destroy();
   }
