@@ -2,10 +2,12 @@ import { ViewFactory } from 'engine/view/view-factory';
 import { IComponentStyle } from './types/icomponent';
 import { View } from 'engine/view/view';
 import { ViewId } from 'engine/view/types/iview';
+import { IModel } from 'engine/model/types/imodel';
 
 export class Component {
   protected _element: HTMLElement;
   protected _viewFactory = new ViewFactory();
+  protected _model: IModel | null = null;
 
   constructor(
     private _hostElement: HTMLElement,

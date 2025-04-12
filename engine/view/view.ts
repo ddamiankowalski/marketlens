@@ -3,6 +3,7 @@ import { assertDefined } from '../utils/assert';
 import { ViewRescaler } from './view-rescaler';
 import { IRendererType } from 'engine/render/types/irenderer';
 import { TestRenderer } from 'engine/render/test-renderer';
+import { GridRenderer } from 'engine/render/grid-renderer';
 
 export class View {
   private _canvas: HTMLCanvasElement;
@@ -38,7 +39,7 @@ export class View {
   }
 
   public setRenderer(type: IRendererType): void {
-    this._renderer = new TestRenderer(this);
+    this._renderer = new GridRenderer(this);
   }
 
   /**

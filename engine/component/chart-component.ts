@@ -3,7 +3,6 @@ import { ChartRowComponent } from './chart-row-component';
 import { Component } from './component';
 import { TimeAxisComponent } from './time-axis-component';
 import { TimeScaleModel } from 'engine/model/timescale-model';
-import { PriceScaleModel } from 'engine/model/pricescale-model';
 
 export class ChartComponent extends Component {
   private _viewController = new ViewController();
