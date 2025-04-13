@@ -17,7 +17,7 @@ export class GridRenderer extends Renderer {
       this.context.stroke();
 
       currentYCoord += this.priceScaleModel.rowDist;
-      value = (+value - this.priceScaleModel.rowValueDist).toString();
+      value = (+value - this.priceScaleModel.pipSize).toString();
     }
   }
 }

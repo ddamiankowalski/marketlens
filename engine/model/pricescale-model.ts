@@ -19,9 +19,13 @@ export class PriceScaleModel {
   ) {
     this._pipSize = pipSize;
 
-    setInterval(() => {
-      this._rowDist += 0.01;
-    }, 10);
+    setTimeout(() => {
+      this._setMode(PriceScaleMode.FreePan);
+
+      setInterval(() => {
+        this._rowDist += 0.01;
+      }, 10);
+    }, 3000);
   }
 
   /**
@@ -58,14 +62,6 @@ export class PriceScaleModel {
     }
 
     return this._rowDist;
-  }
-
-  /**
-   * Disance in value that represents the distance in value
-   * between two closest rows.
-   */
-  get rowValueDist(): number {
-    return this.rowDist * this.pixelValue;
   }
 
   /**
@@ -121,6 +117,7 @@ export class PriceScaleModel {
   private _setMode(mode: PriceScaleMode): void {
     if (mode === PriceScaleMode.FreePan) {
       this._freePanRange = this._sourceController.priceRange;
+      this._rowDist = this.rowDist;
     } else {
       this._freePanRange = null;
     }
