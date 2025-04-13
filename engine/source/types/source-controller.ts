@@ -8,6 +8,6 @@ export class SourceController {
   constructor(private _timeScaleModel: TimeScaleModel) {}
 
   get priceRange(): IPriceRange {
-    return { min: 50, max: 100 };
+    return { min: 1, max: 30 };
   }
 }

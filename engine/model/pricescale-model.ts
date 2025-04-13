@@ -4,13 +4,12 @@ import { View } from 'engine/view/view';
 import { assertDefined } from 'engine/utils';
 
 export class PriceScaleModel {
-  private _rowDist = 1;
   private _offset = 0;
 
   private _mode: PriceScaleMode = PriceScaleMode.Fixed;
   private _freePanRange: IPriceRange | null = null;
 
-  private _pipSize = 1;
+  private _pipSize: number;
 
   constructor(
     private _sourceController: SourceController,
@@ -23,9 +22,9 @@ export class PriceScaleModel {
       this._setMode(PriceScaleMode.FreePan);
 
       setInterval(() => {
-        this._rowDist += 0.01;
-      }, 10);
-    }, 3000);
+        this.setRowDist('negative');
+      }, 100);
+    }, 1000);
   }
 
   /**
@@ -57,11 +56,9 @@ export class PriceScaleModel {
    * bigger than that price.
    */
   get rowDist(): number {
-    if (this._mode === PriceScaleMode.Fixed) {
-      return this._view.height / this.pips;
-    }
+    console.log(this.range);
 
-    return this._rowDist;
+    return this._view.height / this.pips;
   }
 
   /**
@@ -108,6 +105,23 @@ export class PriceScaleModel {
     this._offset += offset;
   }
 
+  public setRowDist(type: 'positive' | 'negative'): void {
+    this._setMode(PriceScaleMode.FreePan);
+
+    if (!this._freePanRange) {
+      return;
+    }
+
+    let { min, max } = this._freePanRange;
+    const factor = this.pipSize * 0.01;
+
+    if (type === 'negative') {
+      this._freePanRange = { min: min + factor, max: max - factor };
+    } else {
+      this._freePanRange = { min: min - factor, max: max + factor };
+    }
+  }
+
   /**
    * Sets price scale mode. Additionally it sets the free pan range
    * as the price range inside the source controller.
@@ -115,9 +129,12 @@ export class PriceScaleModel {
    * @param mode
    */
   private _setMode(mode: PriceScaleMode): void {
+    if (this._mode === mode) {
+      return;
+    }
+
     if (mode === PriceScaleMode.FreePan) {
       this._freePanRange = this._sourceController.priceRange;
-      this._rowDist = this.rowDist;
     } else {
       this._freePanRange = null;
     }
