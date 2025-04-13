@@ -76,11 +76,22 @@ export class PriceScaleModel {
     return 0;
   }
 
+  /**
+   * Returns the current minimum value.
+   */
   get minPrice(): number {
     if (this._mode === PriceScaleMode.Fixed) {
       return this._sourceController.minPrice;
     }
 
     return 0;
+  }
+
+  /**
+   * Indicates how much value is in one pixel
+   */
+  get pixelValue(): number {
+    const diff = Math.abs(this.maxPrice - this.minPrice);
+    return diff / this._view.height;
   }
 }
