@@ -4,31 +4,20 @@ export class GridRenderer extends Renderer {
   public render(): void {
     super.clear();
 
-    if (!this.timeScaleModel || !this.priceScaleModel) {
+    if (!this.priceScaleModel) {
       return;
     }
 
-    this.context.strokeStyle = 'black';
-    let currentXCoord = 0;
-
-    while (currentXCoord < this.view.width) {
-      this.context.beginPath();
-      this.context.moveTo(currentXCoord, 0);
-      this.context.lineTo(currentXCoord, this.view.height);
-      this.context.stroke();
-
-      currentXCoord += this.timeScaleModel.colDist;
-    }
-
     let currentYCoord = 0;
+    let value = this.priceScaleModel.range.max.toString();
 
-    while (currentYCoord < this.view.width) {
+    while (currentYCoord < this.view.height) {
       this.context.beginPath();
-      this.context.moveTo(0, currentYCoord);
-      this.context.lineTo(this.view.width, currentYCoord);
+      this.context.fillText(value, 0, currentYCoord);
       this.context.stroke();
 
       currentYCoord += this.priceScaleModel.rowDist;
+      value = (+value - this.priceScaleModel.rowValueDist).toString();
     }
   }
 }

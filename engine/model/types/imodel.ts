@@ -2,8 +2,8 @@ import { PriceScaleModel } from '../pricescale-model';
 import { TimeScaleModel } from '../timescale-model';
 
 export type IModel = {
-  timeScaleModel?: TimeScaleModel;
-  priceScaleModel?: PriceScaleModel;
+  timeScaleModel?: TimeScaleModel | null;
+  priceScaleModel?: PriceScaleModel | null;
 };
 
 export type IPriceScaleMetadata = {
@@ -13,4 +13,9 @@ export type IPriceScaleMetadata = {
 export enum PriceScaleMode {
   Fixed = 'FIXED',
   FreePan = 'FREE_PAN',
+}
+
+export interface IPriceRange {
+  max: number;
+  min: number;
 }

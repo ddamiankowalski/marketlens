@@ -3,11 +3,13 @@ import { IComponentStyle } from './types/icomponent';
 import { View } from 'engine/view/view';
 import { ViewId } from 'engine/view/types/iview';
 import { IModel } from 'engine/model/types/imodel';
+import { TimeScaleModel } from 'engine/model/timescale-model';
+import { PriceScaleModel } from 'engine/model/pricescale-model';
 
 export class Component {
   protected _element: HTMLElement;
   protected _viewFactory = new ViewFactory();
-  protected _model: IModel = {};
+  protected _model: IModel = { timeScaleModel: null, priceScaleModel: null };
 
   constructor(
     private _hostElement: HTMLElement,
@@ -24,6 +26,26 @@ export class Component {
    */
   get element(): HTMLElement {
     return this._element;
+  }
+
+  /**
+   * Sets a reference to price scale model inside
+   * a given component.
+   *
+   * @param model
+   */
+  public setPriceScaleModel(model: PriceScaleModel): void {
+    this._model.priceScaleModel = model;
+  }
+
+  /**
+   * Sets a reference to time scale model inside a
+   * given component.
+   *
+   * @param model
+   */
+  public setTimeScaleModel(model: TimeScaleModel): void {
+    this._model.timeScaleModel = model;
   }
 
   /**

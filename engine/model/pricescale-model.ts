@@ -1,11 +1,14 @@
 import { SourceController } from 'engine/source/types/source-controller';
-import { IPriceScaleMetadata, PriceScaleMode } from './types/imodel';
+import { IPriceRange, IPriceScaleMetadata, PriceScaleMode } from './types/imodel';
 import { View } from 'engine/view/view';
+import { assertDefined } from 'engine/utils';
 
 export class PriceScaleModel {
   private _rowDist = 1;
   private _offset = 0;
+
   private _mode: PriceScaleMode = PriceScaleMode.Fixed;
+  private _freePanRange: IPriceRange | null = null;
 
   private _pipSize = 1;
 
@@ -37,13 +40,21 @@ export class PriceScaleModel {
   }
 
   /**
+   * Number of pips represented as float number
+   * that is currently visible on screen.
+   */
+  get pips(): number {
+    return this.valueDiff / this.pipSize;
+  }
+
+  /**
    * The distance in px that represents the distance between
    * the given value on price axis and the first price that is
    * bigger than that price.
    */
   get rowDist(): number {
     if (this._mode === PriceScaleMode.Fixed) {
-      return 5;
+      return this._view.height / this.pips;
     }
 
     return this._rowDist;
@@ -54,7 +65,7 @@ export class PriceScaleModel {
    * between two closest rows.
    */
   get rowValueDist(): number {
-    return this.pipSize / this.rowDist;
+    return this.rowDist * this.pixelValue;
   }
 
   /**
@@ -65,33 +76,55 @@ export class PriceScaleModel {
     return this._offset;
   }
 
-  /**
-   * Returns current maximum value
-   */
-  get maxPrice(): number {
+  get range(): IPriceRange {
     if (this._mode === PriceScaleMode.Fixed) {
-      return this._sourceController.maxPrice;
+      return this._sourceController.priceRange;
     }
 
-    return 0;
+    return assertDefined(this._freePanRange, 'Cannot return free pan range for FREE_VIEW');
   }
 
   /**
-   * Returns the current minimum value.
+   * Difference between the maximum and minimum values
+   * inside the pricescale.
    */
-  get minPrice(): number {
-    if (this._mode === PriceScaleMode.Fixed) {
-      return this._sourceController.minPrice;
-    }
-
-    return 0;
+  get valueDiff(): number {
+    const { min, max } = this.range;
+    return Math.abs(max - min);
   }
 
   /**
    * Indicates how much value is in one pixel
    */
   get pixelValue(): number {
-    const diff = Math.abs(this.maxPrice - this.minPrice);
-    return diff / this._view.height;
+    return this.valueDiff / this._view.height;
+  }
+
+  /**
+   * Sets offset
+   *
+   * @param px
+   */
+  public setOffset(px: number): void {
+    this._setMode(PriceScaleMode.FreePan);
+
+    const offset = px * this.pixelValue;
+    this._offset += offset;
+  }
+
+  /**
+   * Sets price scale mode. Additionally it sets the free pan range
+   * as the price range inside the source controller.
+   *
+   * @param mode
+   */
+  private _setMode(mode: PriceScaleMode): void {
+    if (mode === PriceScaleMode.FreePan) {
+      this._freePanRange = this._sourceController.priceRange;
+    } else {
+      this._freePanRange = null;
+    }
+
+    this._mode = mode;
   }
 }
