@@ -4,8 +4,6 @@ import { View } from 'engine/view/view';
 import { assertDefined } from 'engine/utils';
 
 export class PriceScaleModel {
-  private _offset = 0;
-
   private _mode: PriceScaleMode = PriceScaleMode.Fixed;
   private _freePanRange: IPriceRange | null = null;
 
@@ -22,9 +20,15 @@ export class PriceScaleModel {
       this._setMode(PriceScaleMode.FreePan);
 
       setInterval(() => {
-        this.setRowDist('negative');
-      }, 100);
+        this.setOffset(1);
+      }, 1);
     }, 1000);
+
+    setTimeout(() => {
+      setInterval(() => {
+        this.setRowDist('negative');
+      }, 1);
+    }, 3000);
   }
 
   /**
@@ -61,20 +65,22 @@ export class PriceScaleModel {
     return this._view.height / this.pips;
   }
 
-  /**
-   * Returns the offset in pixels that the user moved
-   * either to top or bottom.
-   */
-  get offset(): number {
-    return this._offset;
-  }
-
   get range(): IPriceRange {
     if (this._mode === PriceScaleMode.Fixed) {
       return this._sourceController.priceRange;
     }
 
     return assertDefined(this._freePanRange, 'Cannot return free pan range for FREE_VIEW');
+  }
+
+  get localRange(): IPriceRange {
+    const { max, min } = this.range;
+    const pipSize = this.pipSize;
+
+    return {
+      max: Math.floor((max - 1) / pipSize) * pipSize + pipSize,
+      min: Math.ceil((min + 1) / pipSize) * pipSize,
+    };
   }
 
   /**
@@ -100,9 +106,14 @@ export class PriceScaleModel {
    */
   public setOffset(px: number): void {
     this._setMode(PriceScaleMode.FreePan);
-
     const offset = px * this.pixelValue;
-    this._offset += offset;
+
+    if (!this._freePanRange) {
+      return;
+    }
+
+    const { min, max } = this._freePanRange;
+    this._freePanRange = { min: min + offset, max: max + offset };
   }
 
   public setRowDist(type: 'positive' | 'negative'): void {
@@ -116,9 +127,17 @@ export class PriceScaleModel {
     const factor = this.pipSize * 0.01;
 
     if (type === 'negative') {
-      this._freePanRange = { min: min + factor, max: max - factor };
+      const range = { min: min + factor, max: max - factor };
+
+      if (range.min < range.max) {
+        this._freePanRange = range;
+      }
     } else {
-      this._freePanRange = { min: min - factor, max: max + factor };
+      const range = { min: min - factor, max: max + factor };
+
+      if (range.min < range.max) {
+        this._freePanRange = { min: min - factor, max: max + factor };
+      }
     }
   }
 

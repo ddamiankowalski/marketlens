@@ -1,3 +1,4 @@
+import { lerp } from 'engine/utils/math';
 import { Renderer } from './renderer';
 
 export class GridRenderer extends Renderer {
@@ -8,16 +9,18 @@ export class GridRenderer extends Renderer {
       return;
     }
 
-    let currentYCoord = 0;
-    let value = this.priceScaleModel.range.max.toString();
+    const { min, max } = this.priceScaleModel.range;
+    let value = this.priceScaleModel.localRange.max;
+    let y = lerp(value, min, this.view.height, max, 0);
 
-    while (currentYCoord < this.view.height) {
+    while (y < this.view.height) {
+      y = lerp(value, min, this.view.height, max, 0);
+
       this.context.beginPath();
-      this.context.fillText(value, 0, currentYCoord);
+      this.context.fillText(value.toString(), 0, y);
       this.context.stroke();
 
-      currentYCoord += this.priceScaleModel.rowDist;
-      value = (+value - this.priceScaleModel.pipSize).toString();
+      value = value - this.priceScaleModel.pipSize;
     }
   }
 }
