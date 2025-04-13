@@ -41,8 +41,6 @@ export class ViewRescaler {
       canvas.style.width = `${rect.width}px`;
       canvas.style.height = `${rect.height}px`;
       canvas.style.position = 'absolute';
-      canvas.style.top = '0px';
-      canvas.style.left = '0px';
 
       ViewController.forceRender();
     });

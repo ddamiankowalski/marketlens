@@ -10,10 +10,12 @@ export class ChartRowComponent extends Component {
   private _priceAxisComponent = new PriceAxisComponent(this._sourceController, this.element, {
     flexBasis: '3rem',
     flexShrink: '0',
+    order: '1',
   });
 
   private _chartDataComponent = new ChartDataComponent(this._timeScaleModel, this.priceScaleModel, this.element, {
     flexBasis: '100%',
+    order: '0',
   });
 
   constructor(

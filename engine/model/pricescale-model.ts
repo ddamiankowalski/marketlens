@@ -1,5 +1,6 @@
 import { SourceController } from 'engine/source/types/source-controller';
 import { IPriceScaleMetadata, PriceScaleMode } from './types/imodel';
+import { View } from 'engine/view/view';
 
 export class PriceScaleModel {
   private _rowDist = 1;
@@ -10,6 +11,7 @@ export class PriceScaleModel {
 
   constructor(
     private _sourceController: SourceController,
+    private _view: View,
     { pipSize }: IPriceScaleMetadata = { pipSize: 1 },
   ) {
     this._pipSize = pipSize;

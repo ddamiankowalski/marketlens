@@ -15,7 +15,11 @@ export class PriceAxisComponent extends Component {
     },
   ) {
     super(_hostElement, _style);
-    this._priceScaleModel = new PriceScaleModel(this._sourceController);
+    this.createView();
+    const view = this.getView('');
+    view.setRenderer('TEST');
+
+    this._priceScaleModel = new PriceScaleModel(this._sourceController, view);
   }
 
   get priceScaleModel(): PriceScaleModel {
