@@ -9,3 +9,8 @@ export type IModel = {
 export type IPriceScaleMetadata = {
   pipSize: number;
 };
+
+export enum PriceScaleMode {
+  Fixed = 'FIXED',
+  FreePan = 'FREE_PAN',
+}

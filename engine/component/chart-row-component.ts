@@ -4,16 +4,20 @@ import { PriceAxisComponent } from './price-axis-component';
 import { PriceScaleModel } from 'engine/model/pricescale-model';
 import { IComponentStyle } from './types/icomponent';
 import { TimeScaleModel } from 'engine/model/timescale-model';
+import { SourceController } from 'engine/source/types/source-controller';
 
 export class ChartRowComponent extends Component {
-  private _priceScaleModel = new PriceScaleModel();
+  private _priceAxisComponent = new PriceAxisComponent(this._sourceController, this.element, {
+    flexBasis: '3rem',
+    flexShrink: '0',
+  });
 
-  private _chartDataComponent = new ChartDataComponent(this._timeScaleModel, this._priceScaleModel, this.element, {
+  private _chartDataComponent = new ChartDataComponent(this._timeScaleModel, this.priceScaleModel, this.element, {
     flexBasis: '100%',
   });
-  private _priceAxisComponent = new PriceAxisComponent(this.element, { flexBasis: '3rem', flexShrink: '0' });
 
   constructor(
+    private _sourceController: SourceController,
     private _timeScaleModel: TimeScaleModel,
     _hostElement: HTMLElement,
     _style: IComponentStyle = {
@@ -22,5 +26,9 @@ export class ChartRowComponent extends Component {
     },
   ) {
     super(_hostElement, _style);
+  }
+
+  get priceScaleModel(): PriceScaleModel {
+    return this._priceAxisComponent.priceScaleModel;
   }
 }

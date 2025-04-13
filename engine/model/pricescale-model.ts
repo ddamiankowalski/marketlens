@@ -1,13 +1,29 @@
-import { IPriceScaleMetadata } from './types/imodel';
+import { SourceController } from 'engine/source/types/source-controller';
+import { IPriceScaleMetadata, PriceScaleMode } from './types/imodel';
 
 export class PriceScaleModel {
-  private _rowDist = 6;
+  private _rowDist = 1;
   private _offset = 0;
+  private _mode: PriceScaleMode = PriceScaleMode.Fixed;
 
   private _pipSize = 1;
 
-  constructor({ pipSize }: IPriceScaleMetadata = { pipSize: 1 }) {
+  constructor(
+    private _sourceController: SourceController,
+    { pipSize }: IPriceScaleMetadata = { pipSize: 1 },
+  ) {
     this._pipSize = pipSize;
+
+    setInterval(() => {
+      this._rowDist += 0.01;
+    }, 10);
+  }
+
+  /**
+   * Returns the current price scale mode.
+   */
+  get mode(): PriceScaleMode {
+    return this._mode;
   }
 
   /**
@@ -24,6 +40,10 @@ export class PriceScaleModel {
    * bigger than that price.
    */
   get rowDist(): number {
+    if (this._mode === PriceScaleMode.Fixed) {
+      return 5;
+    }
+
     return this._rowDist;
   }
 
@@ -41,5 +61,24 @@ export class PriceScaleModel {
    */
   get offset(): number {
     return this._offset;
+  }
+
+  /**
+   * Returns current maximum value
+   */
+  get maxPrice(): number {
+    if (this._mode === PriceScaleMode.Fixed) {
+      return this._sourceController.maxPrice;
+    }
+
+    return 0;
+  }
+
+  get minPrice(): number {
+    if (this._mode === PriceScaleMode.Fixed) {
+      return this._sourceController.minPrice;
+    }
+
+    return 0;
   }
 }
