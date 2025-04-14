@@ -22,11 +22,29 @@ export class PriceAxisComponent extends Component {
     this.setPriceScaleModel(this.priceScaleModel);
     view.setRenderer('TEST');
 
+    let isDragging = false;
+
     setTimeout(() => {
       this.element.addEventListener('wheel', (ev) => {
         ev.preventDefault();
 
         this.priceScaleModel.setRowDist(ev.deltaY / 100);
+      });
+
+      this.element.addEventListener('mousedown', () => {
+        isDragging = true;
+      });
+
+      this.element.addEventListener('mousemove', (ev) => {
+        if (!isDragging) {
+          return;
+        }
+
+        this.priceScaleModel.setOffset(ev.movementY);
+      });
+
+      this.element.addEventListener('mouseup', () => {
+        isDragging = false;
       });
     });
   }

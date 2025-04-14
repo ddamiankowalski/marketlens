@@ -9,9 +9,11 @@ export class GridRenderer extends Renderer {
       return;
     }
 
-    const { min, max } = this.priceScaleModel.range;
-    let value = this.priceScaleModel.localRange.max;
-    let y = lerp(value, min, this.view.height, max, 0);
+    const { range, value0, valueStep } = this.priceScaleModel;
+    const { min, max } = range;
+
+    let y = 0;
+    let value = value0;
 
     while (y < this.view.height) {
       y = lerp(value, min, this.view.height, max, 0);
@@ -20,7 +22,7 @@ export class GridRenderer extends Renderer {
       this.context.fillText(value.toString(), 0, y);
       this.context.stroke();
 
-      value = value - this.priceScaleModel.pipSize;
+      value -= valueStep;
     }
   }
 }

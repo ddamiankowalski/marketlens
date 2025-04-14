@@ -18,7 +18,7 @@ export class ViewController {
      * whether to render the next frame.
      */
     const _raf = (currentFrameTime: DOMHighResTimeStamp): void => {
-      if (!lastFrameTime || currentFrameTime - lastFrameTime > 30) {
+      if (!lastFrameTime || currentFrameTime - lastFrameTime > 1) {
         lastFrameTime = currentFrameTime;
         this._renderAll();
       }

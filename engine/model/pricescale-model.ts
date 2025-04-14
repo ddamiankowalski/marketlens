@@ -33,11 +33,31 @@ export class PriceScaleModel {
   }
 
   /**
+   * Returns precision of pips
+   */
+  get pipPrecision(): number {
+    const pipSize = this.pipSize;
+
+    var e = 1,
+      p = 0;
+    while (Math.round(pipSize * e) / e !== pipSize) {
+      e *= 10;
+      p++;
+    }
+    return p;
+  }
+
+  /**
    * Number of pips represented as float number
    * that is currently visible on screen.
    */
   get pips(): number {
     return this.valueDiff / this.pipSize;
+  }
+
+  get rowStep(): number {
+    const zoomFactor = Math.floor(Math.log2(60 / this.rowDist));
+    return Math.pow(2, zoomFactor);
   }
 
   /**
@@ -46,11 +66,14 @@ export class PriceScaleModel {
    * bigger than that price.
    */
   get rowDist(): number {
-    console.log(this.range);
-
     return this._view.height / this.pips;
   }
 
+  /**
+   * Absolute min max price range that represents
+   * the maximum value (top of the canvas) and minimum value
+   * (bottom of the canvas)
+   */
   get range(): IPriceRange {
     if (this._mode === PriceScaleMode.Fixed) {
       return this._sourceController.priceRange;
@@ -59,14 +82,36 @@ export class PriceScaleModel {
     return assertDefined(this._freePanRange, 'Cannot return free pan range for FREE_VIEW');
   }
 
+  /**
+   * Represents local range.
+   */
   get localRange(): IPriceRange {
     const { max, min } = this.range;
     const pipSize = this.pipSize;
 
     return {
-      max: Math.floor((max - 1) / pipSize) * pipSize + pipSize,
-      min: Math.ceil((min + 1) / pipSize) * pipSize,
+      max: Math.floor(max / pipSize) * pipSize + pipSize,
+      min: Math.ceil(min / pipSize) * pipSize,
     };
+  }
+
+  /**
+   * Current grid step in value.
+   */
+  get valueStep(): number {
+    return this.pipSize * this.rowStep;
+  }
+
+  /**
+   * The first value that is rendered in grid.
+   */
+  get value0(): number {
+    const { max } = this.localRange;
+    const precision = this.pipPrecision;
+    const rounded = parseFloat(max.toFixed(precision)) * Math.pow(10, precision);
+    const rowStep = this.rowStep;
+
+    return Math.floor(rounded / rowStep) * rowStep;
   }
 
   /**
@@ -116,11 +161,11 @@ export class PriceScaleModel {
     }
 
     let { min, max } = this._freePanRange;
-    factor *= this.pipSize;
+    factor *= (5 / 100) * this.pips;
 
     this._freePanRange = { min: min + factor, max: max - factor };
 
-    if (this.rowDist > 1000 || this.rowDist < 0.001) {
+    if (this.rowStep < 1) {
       this._freePanRange = { min, max };
     }
   }
