@@ -17,7 +17,7 @@ export class ChartDataComponent extends Component {
     this._model = { timeScaleModel, priceScaleModel };
     this.createView();
 
-    // const view = this.getView('');
-    // view.setRenderer('TEST');
+    const view = this.getView('');
+    view.setRenderer('GRID');
   }
 }

@@ -1,1 +1,1 @@
-export type IRendererType = 'TEST';
+export type IRendererType = 'GRID' | 'PRICE_SCALE';

@@ -1,7 +1,7 @@
 import { lerp } from 'engine/utils/math';
 import { Renderer } from './renderer';
 
-export class GridRenderer extends Renderer {
+export class PriceAxisRenderer extends Renderer {
   public render(): void {
     super.clear();
 
@@ -18,9 +18,9 @@ export class GridRenderer extends Renderer {
     while (y < this.view.height) {
       y = lerp(value, min, this.view.height, max, 0);
 
+      this.context.textBaseline = 'middle';
       this.context.beginPath();
-      this.context.moveTo(0, y);
-      this.context.lineTo(this.view.width, y);
+      this.context.fillText(value.toString(), 0, y);
       this.context.stroke();
 
       value -= valueStep;

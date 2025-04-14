@@ -2,6 +2,7 @@ import { PriceScaleModel } from 'engine/model/pricescale-model';
 import { Component } from './component';
 import { SourceController } from 'engine/source/types/source-controller';
 import { IComponentStyle } from './types/icomponent';
+import { PriceScaleMode } from 'engine/model/types/imodel';
 
 export class PriceAxisComponent extends Component {
   private _priceScaleModel: PriceScaleModel;
@@ -20,11 +21,15 @@ export class PriceAxisComponent extends Component {
 
     this._priceScaleModel = new PriceScaleModel(this._sourceController, view);
     this.setPriceScaleModel(this.priceScaleModel);
-    view.setRenderer('TEST');
+    view.setRenderer('PRICE_SCALE');
 
     let isDragging = false;
 
     setTimeout(() => {
+      this.element.addEventListener('dblclick', () => {
+        this.priceScaleModel.setMode(PriceScaleMode.Fixed);
+      });
+
       this.element.addEventListener('wheel', (ev) => {
         ev.preventDefault();
 

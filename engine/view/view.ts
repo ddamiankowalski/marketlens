@@ -5,6 +5,7 @@ import { IRendererType } from 'engine/render/types/irenderer';
 import { TestRenderer } from 'engine/render/test-renderer';
 import { GridRenderer } from 'engine/render/grid-renderer';
 import { IModel } from 'engine/model/types/imodel';
+import { RendererFactory } from 'engine/render/renderer-factory';
 
 export class View {
   private _canvas: HTMLCanvasElement;
@@ -50,7 +51,7 @@ export class View {
   }
 
   public setRenderer(type: IRendererType): void {
-    this._renderer = new GridRenderer(this);
+    this._renderer = RendererFactory.createRenderer(type, this);
   }
 
   /**

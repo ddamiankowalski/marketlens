@@ -171,6 +171,15 @@ export class PriceScaleModel {
   }
 
   /**
+   * Sets price scale mode.
+   *
+   * @param mode
+   */
+  public setMode(mode: PriceScaleMode): void {
+    this._setMode(mode);
+  }
+
+  /**
    * Sets price scale mode. Additionally it sets the free pan range
    * as the price range inside the source controller.
    *
