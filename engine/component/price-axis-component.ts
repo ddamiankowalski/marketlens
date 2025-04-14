@@ -21,6 +21,14 @@ export class PriceAxisComponent extends Component {
     this._priceScaleModel = new PriceScaleModel(this._sourceController, view);
     this.setPriceScaleModel(this.priceScaleModel);
     view.setRenderer('TEST');
+
+    setTimeout(() => {
+      this.element.addEventListener('wheel', (ev) => {
+        ev.preventDefault();
+
+        this.priceScaleModel.setRowDist(ev.deltaY / 100);
+      });
+    });
   }
 
   get priceScaleModel(): PriceScaleModel {

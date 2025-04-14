@@ -15,20 +15,6 @@ export class PriceScaleModel {
     { pipSize }: IPriceScaleMetadata = { pipSize: 1 },
   ) {
     this._pipSize = pipSize;
-
-    setTimeout(() => {
-      this._setMode(PriceScaleMode.FreePan);
-
-      setInterval(() => {
-        this.setOffset(1);
-      }, 1);
-    }, 1000);
-
-    setTimeout(() => {
-      setInterval(() => {
-        this.setRowDist('negative');
-      }, 1);
-    }, 3000);
   }
 
   /**
@@ -116,7 +102,13 @@ export class PriceScaleModel {
     this._freePanRange = { min: min + offset, max: max + offset };
   }
 
-  public setRowDist(type: 'positive' | 'negative'): void {
+  /**
+   * Updates the row dist between two price points
+   *
+   * @param factor
+   * @returns
+   */
+  public setRowDist(factor: number): void {
     this._setMode(PriceScaleMode.FreePan);
 
     if (!this._freePanRange) {
@@ -124,20 +116,12 @@ export class PriceScaleModel {
     }
 
     let { min, max } = this._freePanRange;
-    const factor = this.pipSize * 0.01;
+    factor *= this.pipSize;
 
-    if (type === 'negative') {
-      const range = { min: min + factor, max: max - factor };
+    this._freePanRange = { min: min + factor, max: max - factor };
 
-      if (range.min < range.max) {
-        this._freePanRange = range;
-      }
-    } else {
-      const range = { min: min - factor, max: max + factor };
-
-      if (range.min < range.max) {
-        this._freePanRange = { min: min - factor, max: max + factor };
-      }
+    if (this.rowDist > 1000 || this.rowDist < 0.001) {
+      this._freePanRange = { min, max };
     }
   }
 
