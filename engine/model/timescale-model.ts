@@ -5,11 +5,7 @@ export class TimeScaleModel {
   private _colDist: number = 100;
   private _offset: number = 0;
 
-  constructor(private _view: View) {
-    // setInterval(() => {
-    //   this._offset += 0.1;
-    // });
-  }
+  constructor(private _view: View) {}
 
   /**
    * Distance in pixels between two nearest
