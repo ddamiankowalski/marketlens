@@ -12,7 +12,7 @@ export class PriceScaleModel {
   constructor(
     private _sourceController: SourceController,
     private _view: View,
-    { pipSize }: IPriceScaleMetadata = { pipSize: 1 },
+    { pipSize }: IPriceScaleMetadata = { pipSize: 0.00001 },
   ) {
     this._pipSize = pipSize;
   }
@@ -57,7 +57,7 @@ export class PriceScaleModel {
 
   get rowStep(): number {
     const zoomFactor = Math.floor(Math.log2(75 / this.rowDist));
-    return Math.pow(2, zoomFactor);
+    return Math.max(Math.pow(2, zoomFactor), this.pipSize);
   }
 
   /**
@@ -108,10 +108,11 @@ export class PriceScaleModel {
   get value0(): number {
     const { max } = this.localRange;
     const precision = this.pipPrecision;
+
     const rounded = parseFloat(max.toFixed(precision)) * Math.pow(10, precision);
     const rowStep = this.rowStep;
 
-    return Math.floor(rounded / rowStep) * rowStep;
+    return parseFloat((Math.floor(rounded / rowStep) * rowStep * Math.pow(10, -precision)).toFixed(precision));
   }
 
   /**
@@ -161,13 +162,9 @@ export class PriceScaleModel {
     }
 
     let { min, max } = this._freePanRange;
-    factor *= (5 / 100) * this.pips;
+    factor *= (5 / 100) * this.valueDiff;
 
-    this._freePanRange = { min: min + factor, max: max - factor };
-
-    if (this.rowStep < 1) {
-      this._freePanRange = { min, max };
-    }
+    this._freePanRange = { min: min - factor, max: max + factor };
   }
 
   /**

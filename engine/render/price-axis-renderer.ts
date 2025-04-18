@@ -9,7 +9,7 @@ export class PriceAxisRenderer extends Renderer {
       return;
     }
 
-    const { range, value0, valueStep } = this.priceScaleModel;
+    const { range, value0, valueStep, pipPrecision } = this.priceScaleModel;
     const { min, max } = range;
 
     let y = 0;
@@ -20,7 +20,7 @@ export class PriceAxisRenderer extends Renderer {
 
       this.context.textBaseline = 'middle';
       this.context.beginPath();
-      this.context.fillText(value.toString(), 0, y);
+      this.context.fillText(value.toFixed(pipPrecision), 0, y);
       this.context.stroke();
 
       value -= valueStep;
