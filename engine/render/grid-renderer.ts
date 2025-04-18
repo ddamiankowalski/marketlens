@@ -43,8 +43,6 @@ export class GridRenderer extends Renderer {
 
     let x = 0;
 
-    console.log(value, min);
-
     while (value < min) {
       x = lerp(value, max, viewWidth, min, 0);
 
