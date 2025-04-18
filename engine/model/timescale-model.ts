@@ -30,6 +30,11 @@ export class TimeScaleModel {
     return this._view.width;
   }
 
+  get rangeDiff(): number {
+    const { max, min } = this.range;
+    return Math.abs(max - min);
+  }
+
   /**
    * Time axis range where max represents the right
    * bound column and min represents left bound
@@ -63,8 +68,10 @@ export class TimeScaleModel {
   }
 
   public setColDist(factor: number): void {
+    factor = this.colDist * (factor / 1000);
+
     const ratio = this.offset / this.colDist;
-    const colDist = this._colDist - factor / 10;
+    const colDist = this._colDist - factor;
 
     if (colDist < 1) {
       this._colDist = 1;
