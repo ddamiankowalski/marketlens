@@ -12,7 +12,7 @@ export class PriceScaleModel {
   constructor(
     private _sourceController: SourceController,
     private _view: View,
-    { pipSize }: IPriceScaleMetadata = { pipSize: 0.00001 },
+    { pipSize }: IPriceScaleMetadata = { pipSize: 1 },
   ) {
     this._pipSize = pipSize;
   }
@@ -99,7 +99,7 @@ export class PriceScaleModel {
    * Current grid step in value.
    */
   get valueStep(): number {
-    return this.pipSize * this.rowStep;
+    return Math.max(this.pipSize * this.rowStep, this.pipSize);
   }
 
   /**

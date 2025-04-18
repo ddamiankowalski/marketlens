@@ -63,12 +63,15 @@ export class TimeScaleModel {
   }
 
   public setColDist(factor: number): void {
-    this._colDist -= factor / 10;
+    const ratio = this.offset / this.colDist;
+    const colDist = this._colDist - factor / 10;
 
-    if (this._colDist <= 2) {
-      this._colDist = 2;
+    if (colDist < 1) {
+      this._colDist = 1;
+    } else {
+      this._colDist = colDist;
     }
 
-    this._offset = (this._offset / this.colDist) * (this.colDist - factor / 10);
+    this._offset = ratio * this.colDist;
   }
 }
