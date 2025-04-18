@@ -56,7 +56,7 @@ export class PriceScaleModel {
   }
 
   get rowStep(): number {
-    const zoomFactor = Math.floor(Math.log2(60 / this.rowDist));
+    const zoomFactor = Math.floor(Math.log2(75 / this.rowDist));
     return Math.pow(2, zoomFactor);
   }
 

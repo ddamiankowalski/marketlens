@@ -19,3 +19,8 @@ export interface IPriceRange {
   max: number;
   min: number;
 }
+
+export interface ITimeRange {
+  max: number;
+  min: number;
+}

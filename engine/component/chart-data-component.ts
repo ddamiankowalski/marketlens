@@ -19,5 +19,30 @@ export class ChartDataComponent extends Component {
 
     const view = this.getView('');
     view.setRenderer('GRID');
+
+    this.element.addEventListener('wheel', (ev) => {
+      ev.preventDefault();
+
+      this._model.timeScaleModel?.setColDist(ev.deltaY);
+    });
+
+    let isDragging = false;
+
+    this.element.addEventListener('mousedown', () => {
+      isDragging = true;
+    });
+
+    this.element.addEventListener('mousemove', (ev) => {
+      if (!isDragging) {
+        return;
+      }
+
+      this._model.timeScaleModel?.setOffset(ev.movementX);
+      this._model.priceScaleModel?.setOffset(ev.movementY);
+    });
+
+    this.element.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
   }
 }

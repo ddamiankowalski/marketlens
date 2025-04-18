@@ -5,6 +5,11 @@ export class GridRenderer extends Renderer {
   public render(): void {
     super.clear();
 
+    this._renderRows();
+    this._renderColumns();
+  }
+
+  private _renderRows(): void {
     if (!this.priceScaleModel) {
       return;
     }
@@ -24,6 +29,31 @@ export class GridRenderer extends Renderer {
       this.context.stroke();
 
       value -= valueStep;
+    }
+  }
+
+  private _renderColumns(): void {
+    if (!this.timeScaleModel) {
+      return;
+    }
+
+    const { localRange, range, viewWidth } = this.timeScaleModel;
+    const { min, max } = range;
+    let { max: value } = localRange;
+
+    let x = 0;
+
+    console.log(value, min);
+
+    while (value < min) {
+      x = lerp(value, max, viewWidth, min, 0);
+
+      this.context.beginPath();
+      this.context.moveTo(x, 0);
+      this.context.lineTo(x, this.view.height);
+      this.context.stroke();
+
+      value += 1;
     }
   }
 }
