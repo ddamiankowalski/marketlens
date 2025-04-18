@@ -39,11 +39,11 @@ export class GridRenderer extends Renderer {
 
     const { localRange, range, viewWidth } = this.timeScaleModel;
     const { min, max } = range;
-    let { max: value } = localRange;
+    let { min: value } = localRange;
 
     let x = 0;
 
-    while (value < min) {
+    while (value > max) {
       x = lerp(value, max, viewWidth, min, 0);
 
       this.context.beginPath();
@@ -51,7 +51,7 @@ export class GridRenderer extends Renderer {
       this.context.lineTo(x, this.view.height);
       this.context.stroke();
 
-      value += 1;
+      value -= 1;
     }
   }
 }

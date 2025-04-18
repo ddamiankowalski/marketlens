@@ -2,10 +2,14 @@ import { View } from 'engine/view/view';
 import { ITimeRange } from './types/imodel';
 
 export class TimeScaleModel {
-  private _colDist: number = 6;
+  private _colDist: number = 100;
   private _offset: number = 0;
 
-  constructor(private _view: View) {}
+  constructor(private _view: View) {
+    // setInterval(() => {
+    //   this._offset += 0.1;
+    // });
+  }
 
   /**
    * Distance in pixels between two nearest
@@ -63,10 +67,12 @@ export class TimeScaleModel {
   }
 
   public setColDist(factor: number): void {
-    this._colDist += factor / 100;
+    this._colDist -= factor / 10;
 
     if (this._colDist <= 1) {
       this._colDist = 1;
     }
+
+    this._offset = (this._offset / this.colDist) * (this.colDist - factor / 10);
   }
 }
