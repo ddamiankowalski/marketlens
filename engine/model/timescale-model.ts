@@ -68,17 +68,19 @@ export class TimeScaleModel {
   }
 
   public setColDist(factor: number): void {
-    factor = this.colDist * (factor / 1000);
+    let resultDist = this._colDist - factor / 20;
 
-    const ratio = this.offset / this.colDist;
-    const colDist = this._colDist - factor;
-
-    if (colDist < 1) {
-      this._colDist = 1;
-    } else {
-      this._colDist = colDist;
+    if (resultDist < 1) {
+      resultDist = 1;
+    } else if (resultDist > 100) {
+      resultDist = 100;
     }
 
-    this._offset = ratio * this.colDist;
+    const centerX = this._offset + this.viewWidth / 2;
+    const centerColumnIndex = centerX / this._colDist;
+
+    this._colDist = resultDist;
+
+    this._offset = centerColumnIndex * resultDist - this.viewWidth / 2;
   }
 }
