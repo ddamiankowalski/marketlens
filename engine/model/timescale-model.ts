@@ -76,11 +76,9 @@ export class TimeScaleModel {
       resultDist = 100;
     }
 
-    const centerX = this._offset + this.viewWidth / 2;
-    const centerColumnIndex = centerX / this._colDist;
+    const ratio = this._offset / this._colDist;
 
     this._colDist = resultDist;
-
-    this._offset = centerColumnIndex * resultDist - this.viewWidth / 2;
+    this._offset = ratio * resultDist;
   }
 }
